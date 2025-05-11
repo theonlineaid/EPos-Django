@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 from .models import Product, Category
+from apps.users.models import User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -11,13 +12,30 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    category_id = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(), source='category', write_only=True
-    )
+    seller = serializers.SerializerMethodField()  # Custom field for seller info
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'category', 'category_id',
+        fields = ['id', 'name', 'category',
                   'stock_quantity', 'price', 'seller']
-        read_only_fields = ['seller']
+
+    def get_seller(self, obj):
+        # Only return seller info if the user is a seller or if it's an admin view
+        user = self.context['request'].user
+        if user.user_type == 'seller' and obj.seller == user:
+            return {
+                'id': obj.seller.id,
+                'username': obj.seller.username
+            }
+        return None  # Admins or others will not see the seller field in the response
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        # Assign seller if user is seller, else set seller to None for admin
+        if user.user_type == 'seller':
+            validated_data['seller'] = user
+        else:
+            validated_data['seller'] = None
+
+        # Create the product and return it
+        return super().create(validated_data)

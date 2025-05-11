@@ -28,3 +28,10 @@ python manage.py startapp products apps/products
 python manage.py startapp orders apps/orders
 python manage.py startapp users apps/users
 ```
+
+## Add migration
+
+```
+docker compose exec web python manage.py makemigrations products
+docker compose exec web python manage.py migrate
+```
