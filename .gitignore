@@ -1,0 +1,61 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django DB
+*.sqlite3
+db_data
+
+# Environments
+# .env
+.venv/
+venv/
+# env/
+
+# Django migrations (optional)
+**/migrations/*.pyc
+**/migrations/__pycache__/
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# VS Code / PyCharm
+.vscode/
+.idea/
+
+# macOS / Linux / Windows
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Media / Static (optional for dev)
+media/
+staticfiles/
+static_root/
+
+# Coverage / test
+htmlcov/
+coverage.xml
+.pytest_cache/
+.tox/
+.nox/
+
+# Docker
+*.pid
+*.bak
+docker-compose.override.yml
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node (if using for frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Others
+*.swp
