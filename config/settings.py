@@ -70,7 +70,7 @@ INSTALLED_APPS = [
 
     'apps.users',
     'apps.products',
-    # 'apps.orders',
+    'apps.orders',
     # 'apps.inventory',
     'drf_yasg'
 ]

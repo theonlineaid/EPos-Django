@@ -1,7 +1,7 @@
 # product/serializers.py
 
 from rest_framework import serializers
-from .models import Product, Category
+from .models import Product, Category, Review
 from apps.users.models import User
 
 
@@ -39,3 +39,12 @@ class ProductSerializer(serializers.ModelSerializer):
 
         # Create the product and return it
         return super().create(validated_data)
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'customer', 'product',
+                  'rating', 'comment', 'created_at']
+        # Make sure customers cannot modify 'customer' or 'product' fields
+        read_only_fields = ['customer', 'product', 'created_at']

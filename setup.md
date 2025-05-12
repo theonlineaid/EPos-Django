@@ -35,3 +35,9 @@ python manage.py startapp users apps/users
 docker compose exec web python manage.py makemigrations products
 docker compose exec web python manage.py migrate
 ```
+
+## Get DB
+
+```
+docker exec -t pos_api-db-1 pg_dump -U postgres -d online > db_dump.sql
+```

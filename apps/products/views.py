@@ -1,10 +1,12 @@
 # product/views.py
 
-from rest_framework import generics, filters
-from .models import Product, Category
-from .serializers import ProductSerializer, CategorySerializer
+from rest_framework import generics, filters, permissions
+from rest_framework.generics import CreateAPIView
+from .models import Product, Category, Review
+from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
 from .permissions import IsAdminOnly, IsSellerOnly
 from rest_framework.permissions import AllowAny
+from django.shortcuts import get_object_or_404
 
 
 class CategoryListCreateView(generics.ListCreateAPIView):
@@ -34,3 +36,13 @@ class ProductCreateView(generics.CreateAPIView):
         else:
             # Admins will not set a seller for the product
             serializer.save(seller=None)
+
+
+class ReviewCreateView(CreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def perform_create(self, serializer):
+        product_id = self.request.data.get("product")
+        product = get_object_or_404(Product, id=product_id)
+        serializer.save(customer=self.request.user, product=product)
